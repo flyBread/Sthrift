@@ -1,4 +1,4 @@
-package com.github.baseExample;
+package com.github.baseExample.fileChannel;
 
 import java.io.IOException;
 import java.io.PipedInputStream;

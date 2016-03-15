@@ -1,4 +1,4 @@
-package com.github.baseExample;
+package com.github.baseExample.fileChannel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,23 +9,13 @@ import java.net.Socket;
 
 public class TalkServer {
 
-  public static void main(String args[]) {
-    try {
-      @SuppressWarnings("resource")
-      ServerSocket server = new ServerSocket(4700);
-
-      // 创建一个ServerSocket在端口4700监听客户请求
-      // 使用accept()阻塞等待客户请求，有客户
-      // 请求到来则产生一个Socket对象，并继续执行
-      while (true) {
-        Socket connection = server.accept();
-        handleRequest(connection);
-        connection.close();
-      }
-    }
-    catch (Exception e) {
-      System.out.println("Error:" + e);
-      // 出错，打印出错信息
+  @SuppressWarnings("resource")
+  public static void main(String args[]) throws Exception {
+    ServerSocket server = new ServerSocket(4700);
+    while (true) {
+      Socket connection = server.accept();
+      handleRequest(connection);
+      connection.close();
     }
   }
 
@@ -42,18 +32,8 @@ public class TalkServer {
         System.out.println("服务器接收到客户端的发送的消息：" + line);
         os.println("服务端应答信息：" + Math.random());
         os.flush();
-      } else {
-        try {
-          Thread.sleep(100);
-        }
-        catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
       }
-
     }
-
     os.close(); // 关闭Socket输出流
     is.close(); // 关闭Socket输入流
   }
