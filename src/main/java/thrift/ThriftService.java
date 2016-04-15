@@ -6,20 +6,27 @@
  */
 package thrift;
 
-import java.io.Serializable;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.thrift.TBase;
-import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
+
 import org.apache.thrift.scheme.TupleScheme;
+import org.apache.thrift.protocol.TTupleProtocol;
+import org.apache.thrift.protocol.TProtocolException;
+import org.apache.thrift.EncodingUtils;
+import org.apache.thrift.TException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.Collections;
+import java.util.BitSet;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,159 +34,135 @@ public class ThriftService {
 
   public interface Iface {
 
-    public BooleanResult serverState(String userid) throws org.apache.thrift.TException;
+    public BoolResult serverState(String userid, long from, int to) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void serverState(String userid,
-        org.apache.thrift.async.AsyncMethodCallback<AsyncClient.serverState_call> resultHandler)
-            throws org.apache.thrift.TException;
+    public void serverState(String userid, long from, int to, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.serverState_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
   public static class Client extends org.apache.thrift.TServiceClient implements Iface {
     public static class Factory implements org.apache.thrift.TServiceClientFactory<Client> {
       public Factory() {}
-
       public Client getClient(org.apache.thrift.protocol.TProtocol prot) {
         return new Client(prot);
       }
-
-      public Client getClient(org.apache.thrift.protocol.TProtocol iprot,
-          org.apache.thrift.protocol.TProtocol oprot) {
+      public Client getClient(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot) {
         return new Client(iprot, oprot);
       }
     }
 
-    public Client(org.apache.thrift.protocol.TProtocol prot) {
+    public Client(org.apache.thrift.protocol.TProtocol prot)
+    {
       super(prot, prot);
     }
 
-    public Client(org.apache.thrift.protocol.TProtocol iprot,
-        org.apache.thrift.protocol.TProtocol oprot) {
+    public Client(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot) {
       super(iprot, oprot);
     }
 
-    public BooleanResult serverState(String userid) throws org.apache.thrift.TException {
-      send_serverState(userid);
+    public BoolResult serverState(String userid, long from, int to) throws org.apache.thrift.TException
+    {
+      send_serverState(userid, from, to);
       return recv_serverState();
     }
 
-    public void send_serverState(String userid) throws org.apache.thrift.TException {
+    public void send_serverState(String userid, long from, int to) throws org.apache.thrift.TException
+    {
       serverState_args args = new serverState_args();
       args.setUserid(userid);
+      args.setFrom(from);
+      args.setTo(to);
       sendBase("serverState", args);
     }
 
-    public BooleanResult recv_serverState() throws org.apache.thrift.TException {
+    public BoolResult recv_serverState() throws org.apache.thrift.TException
+    {
       serverState_result result = new serverState_result();
       receiveBase(result, "serverState");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(
-          org.apache.thrift.TApplicationException.MISSING_RESULT,
-          "serverState failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "serverState failed: unknown result");
     }
 
   }
-
-  public static class AsyncClient extends org.apache.thrift.async.TAsyncClient implements
-      AsyncIface {
-    public static class Factory implements
-        org.apache.thrift.async.TAsyncClientFactory<AsyncClient> {
+  public static class AsyncClient extends org.apache.thrift.async.TAsyncClient implements AsyncIface {
+    public static class Factory implements org.apache.thrift.async.TAsyncClientFactory<AsyncClient> {
       private org.apache.thrift.async.TAsyncClientManager clientManager;
       private org.apache.thrift.protocol.TProtocolFactory protocolFactory;
-
-      public Factory(org.apache.thrift.async.TAsyncClientManager clientManager,
-          org.apache.thrift.protocol.TProtocolFactory protocolFactory) {
+      public Factory(org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.protocol.TProtocolFactory protocolFactory) {
         this.clientManager = clientManager;
         this.protocolFactory = protocolFactory;
       }
-
-      public AsyncClient getAsyncClient(
-          org.apache.thrift.transport.TNonblockingTransport transport) {
+      public AsyncClient getAsyncClient(org.apache.thrift.transport.TNonblockingTransport transport) {
         return new AsyncClient(protocolFactory, clientManager, transport);
       }
     }
 
-    public AsyncClient(org.apache.thrift.protocol.TProtocolFactory protocolFactory,
-        org.apache.thrift.async.TAsyncClientManager clientManager,
-        org.apache.thrift.transport.TNonblockingTransport transport) {
+    public AsyncClient(org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.transport.TNonblockingTransport transport) {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void serverState(String userid,
-        org.apache.thrift.async.AsyncMethodCallback<serverState_call> resultHandler)
-            throws org.apache.thrift.TException {
+    public void serverState(String userid, long from, int to, org.apache.thrift.async.AsyncMethodCallback<serverState_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      serverState_call method_call = new serverState_call(userid, resultHandler, this,
-          ___protocolFactory, ___transport);
+      serverState_call method_call = new serverState_call(userid, from, to, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class serverState_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String userid;
-
-      public serverState_call(String userid,
-          org.apache.thrift.async.AsyncMethodCallback<serverState_call> resultHandler,
-          org.apache.thrift.async.TAsyncClient client,
-          org.apache.thrift.protocol.TProtocolFactory protocolFactory,
-          org.apache.thrift.transport.TNonblockingTransport transport)
-              throws org.apache.thrift.TException {
+      private long from;
+      private int to;
+      public serverState_call(String userid, long from, int to, org.apache.thrift.async.AsyncMethodCallback<serverState_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.userid = userid;
+        this.from = from;
+        this.to = to;
       }
 
-      public void write_args(org.apache.thrift.protocol.TProtocol prot)
-          throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("serverState",
-            org.apache.thrift.protocol.TMessageType.CALL, 0));
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("serverState", org.apache.thrift.protocol.TMessageType.CALL, 0));
         serverState_args args = new serverState_args();
         args.setUserid(userid);
+        args.setFrom(from);
+        args.setTo(to);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public BooleanResult getResult() throws org.apache.thrift.TException {
+      public BoolResult getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(
-            getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(
-            memoryTransport);
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_serverState();
       }
     }
 
   }
 
-  public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I>
-      implements org.apache.thrift.TProcessor {
+  public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class.getName());
-
     public Processor(I iface) {
-      super(iface, getProcessMap(
-          new HashMap<String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>>()));
+      super(iface, getProcessMap(new HashMap<String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>>()));
     }
 
-    protected Processor(I iface,
-        Map<String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> processMap) {
+    protected Processor(I iface, Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       super(iface, getProcessMap(processMap));
     }
 
-    private static <I extends Iface> Map<String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> getProcessMap(
-        Map<String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> processMap) {
+    private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("serverState", new serverState());
       return processMap;
     }
 
-    public static class serverState<I extends Iface> extends
-        org.apache.thrift.ProcessFunction<I, serverState_args> {
+    public static class serverState<I extends Iface> extends org.apache.thrift.ProcessFunction<I, serverState_args> {
       public serverState() {
         super("serverState");
       }
@@ -192,36 +175,37 @@ public class ThriftService {
         return false;
       }
 
-      public serverState_result getResult(I iface, serverState_args args)
-          throws org.apache.thrift.TException {
+      public serverState_result getResult(I iface, serverState_args args) throws org.apache.thrift.TException {
         serverState_result result = new serverState_result();
-        result.success = iface.serverState(args.userid);
+        result.success = iface.serverState(args.userid, args.from, args.to);
         return result;
       }
     }
 
   }
 
-  public static class serverState_args implements TBase<serverState_args, serverState_args._Fields>,
-      Serializable, Cloneable {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct(
-        "serverState_args");
+  public static class serverState_args implements org.apache.thrift.TBase<serverState_args, serverState_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("serverState_args");
 
-    private static final org.apache.thrift.protocol.TField USERID_FIELD_DESC = new org.apache.thrift.protocol.TField(
-        "userid", org.apache.thrift.protocol.TType.STRING, (short) 1);
+    private static final org.apache.thrift.protocol.TField USERID_FIELD_DESC = new org.apache.thrift.protocol.TField("userid", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField FROM_FIELD_DESC = new org.apache.thrift.protocol.TField("from", org.apache.thrift.protocol.TType.I64, (short)2);
+    private static final org.apache.thrift.protocol.TField TO_FIELD_DESC = new org.apache.thrift.protocol.TField("to", org.apache.thrift.protocol.TType.I32, (short)3);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-
     static {
       schemes.put(StandardScheme.class, new serverState_argsStandardSchemeFactory());
       schemes.put(TupleScheme.class, new serverState_argsTupleSchemeFactory());
     }
 
     public String userid; // required
+    public long from; // required
+    public int to; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      USERID((short) 1, "userid");
+      USERID((short)1, "userid"),
+      FROM((short)2, "from"),
+      TO((short)3, "to");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -235,11 +219,15 @@ public class ThriftService {
        * Find the _Fields constant that matches fieldId, or null if its not found.
        */
       public static _Fields findByThriftId(int fieldId) {
-        switch (fieldId) {
-        case 1: // USERID
-          return USERID;
-        default:
-          return null;
+        switch(fieldId) {
+          case 1: // USERID
+            return USERID;
+          case 2: // FROM
+            return FROM;
+          case 3: // TO
+            return TO;
+          default:
+            return null;
         }
       }
 
@@ -249,8 +237,7 @@ public class ThriftService {
        */
       public static _Fields findByThriftIdOrThrow(int fieldId) {
         _Fields fields = findByThriftId(fieldId);
-        if (fields == null)
-          throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
         return fields;
       }
 
@@ -279,34 +266,48 @@ public class ThriftService {
     }
 
     // isset id assignments
+    private static final int __FROM_ISSET_ID = 0;
+    private static final int __TO_ISSET_ID = 1;
+    private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-
     static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(
-          _Fields.class);
-      tmpMap.put(_Fields.USERID, new org.apache.thrift.meta_data.FieldMetaData("userid",
-          org.apache.thrift.TFieldRequirementType.DEFAULT,
-          new org.apache.thrift.meta_data.FieldValueMetaData(
-              org.apache.thrift.protocol.TType.STRING)));
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.USERID, new org.apache.thrift.meta_data.FieldMetaData("userid", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.FROM, new org.apache.thrift.meta_data.FieldMetaData("from", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
+      tmpMap.put(_Fields.TO, new org.apache.thrift.meta_data.FieldMetaData("to", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(serverState_args.class,
-          metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(serverState_args.class, metaDataMap);
     }
 
-    public serverState_args() {}
+    public serverState_args() {
+    }
 
-    public serverState_args(String userid) {
+    public serverState_args(
+      String userid,
+      long from,
+      int to)
+    {
       this();
       this.userid = userid;
+      this.from = from;
+      setFromIsSet(true);
+      this.to = to;
+      setToIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public serverState_args(serverState_args other) {
+      __isset_bitfield = other.__isset_bitfield;
       if (other.isSetUserid()) {
         this.userid = other.userid;
       }
+      this.from = other.from;
+      this.to = other.to;
     }
 
     public serverState_args deepCopy() {
@@ -316,6 +317,10 @@ public class ThriftService {
     @Override
     public void clear() {
       this.userid = null;
+      setFromIsSet(false);
+      this.from = 0;
+      setToIsSet(false);
+      this.to = 0;
     }
 
     public String getUserid() {
@@ -342,13 +347,75 @@ public class ThriftService {
       }
     }
 
+    public long getFrom() {
+      return this.from;
+    }
+
+    public serverState_args setFrom(long from) {
+      this.from = from;
+      setFromIsSet(true);
+      return this;
+    }
+
+    public void unsetFrom() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __FROM_ISSET_ID);
+    }
+
+    /** Returns true if field from is set (has been assigned a value) and false otherwise */
+    public boolean isSetFrom() {
+      return EncodingUtils.testBit(__isset_bitfield, __FROM_ISSET_ID);
+    }
+
+    public void setFromIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __FROM_ISSET_ID, value);
+    }
+
+    public int getTo() {
+      return this.to;
+    }
+
+    public serverState_args setTo(int to) {
+      this.to = to;
+      setToIsSet(true);
+      return this;
+    }
+
+    public void unsetTo() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __TO_ISSET_ID);
+    }
+
+    /** Returns true if field to is set (has been assigned a value) and false otherwise */
+    public boolean isSetTo() {
+      return EncodingUtils.testBit(__isset_bitfield, __TO_ISSET_ID);
+    }
+
+    public void setToIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TO_ISSET_ID, value);
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case USERID:
         if (value == null) {
           unsetUserid();
         } else {
-          setUserid((String) value);
+          setUserid((String)value);
+        }
+        break;
+
+      case FROM:
+        if (value == null) {
+          unsetFrom();
+        } else {
+          setFrom((Long)value);
+        }
+        break;
+
+      case TO:
+        if (value == null) {
+          unsetTo();
+        } else {
+          setTo((Integer)value);
         }
         break;
 
@@ -359,6 +426,12 @@ public class ThriftService {
       switch (field) {
       case USERID:
         return getUserid();
+
+      case FROM:
+        return Long.valueOf(getFrom());
+
+      case TO:
+        return Integer.valueOf(getTo());
 
       }
       throw new IllegalStateException();
@@ -373,6 +446,10 @@ public class ThriftService {
       switch (field) {
       case USERID:
         return isSetUserid();
+      case FROM:
+        return isSetFrom();
+      case TO:
+        return isSetTo();
       }
       throw new IllegalStateException();
     }
@@ -382,7 +459,7 @@ public class ThriftService {
       if (that == null)
         return false;
       if (that instanceof serverState_args)
-        return this.equals((serverState_args) that);
+        return this.equals((serverState_args)that);
       return false;
     }
 
@@ -396,6 +473,24 @@ public class ThriftService {
         if (!(this_present_userid && that_present_userid))
           return false;
         if (!this.userid.equals(that.userid))
+          return false;
+      }
+
+      boolean this_present_from = true;
+      boolean that_present_from = true;
+      if (this_present_from || that_present_from) {
+        if (!(this_present_from && that_present_from))
+          return false;
+        if (this.from != that.from)
+          return false;
+      }
+
+      boolean this_present_to = true;
+      boolean that_present_to = true;
+      if (this_present_to || that_present_to) {
+        if (!(this_present_to && that_present_to))
+          return false;
+        if (this.to != that.to)
           return false;
       }
 
@@ -413,7 +508,7 @@ public class ThriftService {
       }
 
       int lastComparison = 0;
-      serverState_args typedOther = (serverState_args) other;
+      serverState_args typedOther = (serverState_args)other;
 
       lastComparison = Boolean.valueOf(isSetUserid()).compareTo(typedOther.isSetUserid());
       if (lastComparison != 0) {
@@ -425,6 +520,26 @@ public class ThriftService {
           return lastComparison;
         }
       }
+      lastComparison = Boolean.valueOf(isSetFrom()).compareTo(typedOther.isSetFrom());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetFrom()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.from, typedOther.from);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetTo()).compareTo(typedOther.isSetTo());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTo()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.to, typedOther.to);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -432,13 +547,11 @@ public class ThriftService {
       return _Fields.findByThriftId(fieldId);
     }
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot)
-        throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
       schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot)
-        throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
       schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
     }
 
@@ -454,6 +567,14 @@ public class ThriftService {
         sb.append(this.userid);
       }
       first = false;
+      if (!first) sb.append(", ");
+      sb.append("from:");
+      sb.append(this.from);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("to:");
+      sb.append(this.to);
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -465,21 +586,18 @@ public class ThriftService {
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
       try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(
-            new org.apache.thrift.transport.TIOStreamTransport(out)));
-      }
-      catch (org.apache.thrift.TException te) {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
       }
     }
 
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException,
-        ClassNotFoundException {
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(
-            new org.apache.thrift.transport.TIOStreamTransport(in)));
-      }
-      catch (org.apache.thrift.TException te) {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
       }
     }
@@ -492,26 +610,42 @@ public class ThriftService {
 
     private static class serverState_argsStandardScheme extends StandardScheme<serverState_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, serverState_args struct)
-          throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, serverState_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
-        while (true) {
+        while (true)
+        {
           schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
             break;
           }
           switch (schemeField.id) {
-          case 1: // USERID
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.userid = iprot.readString();
-              struct.setUseridIsSet(true);
-            } else {
+            case 1: // USERID
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.userid = iprot.readString();
+                struct.setUseridIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // FROM
+              if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+                struct.from = iprot.readI64();
+                struct.setFromIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 3: // TO
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.to = iprot.readI32();
+                struct.setToIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
           iprot.readFieldEnd();
         }
@@ -521,8 +655,7 @@ public class ThriftService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, serverState_args struct)
-          throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, serverState_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -531,6 +664,12 @@ public class ThriftService {
           oprot.writeString(struct.userid);
           oprot.writeFieldEnd();
         }
+        oprot.writeFieldBegin(FROM_FIELD_DESC);
+        oprot.writeI64(struct.from);
+        oprot.writeFieldEnd();
+        oprot.writeFieldBegin(TO_FIELD_DESC);
+        oprot.writeI32(struct.to);
+        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -546,54 +685,67 @@ public class ThriftService {
     private static class serverState_argsTupleScheme extends TupleScheme<serverState_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, serverState_args struct)
-          throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, serverState_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetUserid()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetFrom()) {
+          optionals.set(1);
+        }
+        if (struct.isSetTo()) {
+          optionals.set(2);
+        }
+        oprot.writeBitSet(optionals, 3);
         if (struct.isSetUserid()) {
           oprot.writeString(struct.userid);
+        }
+        if (struct.isSetFrom()) {
+          oprot.writeI64(struct.from);
+        }
+        if (struct.isSetTo()) {
+          oprot.writeI32(struct.to);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, serverState_args struct)
-          throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, serverState_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(3);
         if (incoming.get(0)) {
           struct.userid = iprot.readString();
           struct.setUseridIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.from = iprot.readI64();
+          struct.setFromIsSet(true);
+        }
+        if (incoming.get(2)) {
+          struct.to = iprot.readI32();
+          struct.setToIsSet(true);
         }
       }
     }
 
   }
 
-  public static class serverState_result implements
-      org.apache.thrift.TBase<serverState_result, serverState_result._Fields>, java.io.Serializable,
-      Cloneable {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct(
-        "serverState_result");
+  public static class serverState_result implements org.apache.thrift.TBase<serverState_result, serverState_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("serverState_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField(
-        "success", org.apache.thrift.protocol.TType.STRUCT, (short) 0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-
     static {
       schemes.put(StandardScheme.class, new serverState_resultStandardSchemeFactory());
       schemes.put(TupleScheme.class, new serverState_resultTupleSchemeFactory());
     }
 
-    public BooleanResult success; // required
+    public BoolResult success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short) 0, "success");
+      SUCCESS((short)0, "success");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -607,11 +759,11 @@ public class ThriftService {
        * Find the _Fields constant that matches fieldId, or null if its not found.
        */
       public static _Fields findByThriftId(int fieldId) {
-        switch (fieldId) {
-        case 0: // SUCCESS
-          return SUCCESS;
-        default:
-          return null;
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
         }
       }
 
@@ -621,8 +773,7 @@ public class ThriftService {
        */
       public static _Fields findByThriftIdOrThrow(int fieldId) {
         _Fields fields = findByThriftId(fieldId);
-        if (fields == null)
-          throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
         return fields;
       }
 
@@ -652,22 +803,20 @@ public class ThriftService {
 
     // isset id assignments
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-
     static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(
-          _Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success",
-          org.apache.thrift.TFieldRequirementType.DEFAULT,
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT,
-              BooleanResult.class)));
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BoolResult.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(serverState_result.class,
-          metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(serverState_result.class, metaDataMap);
     }
 
-    public serverState_result() {}
+    public serverState_result() {
+    }
 
-    public serverState_result(BooleanResult success) {
+    public serverState_result(
+      BoolResult success)
+    {
       this();
       this.success = success;
     }
@@ -677,7 +826,7 @@ public class ThriftService {
      */
     public serverState_result(serverState_result other) {
       if (other.isSetSuccess()) {
-        this.success = new BooleanResult(other.success);
+        this.success = new BoolResult(other.success);
       }
     }
 
@@ -690,11 +839,11 @@ public class ThriftService {
       this.success = null;
     }
 
-    public BooleanResult getSuccess() {
+    public BoolResult getSuccess() {
       return this.success;
     }
 
-    public serverState_result setSuccess(BooleanResult success) {
+    public serverState_result setSuccess(BoolResult success) {
       this.success = success;
       return this;
     }
@@ -720,7 +869,7 @@ public class ThriftService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((BooleanResult) value);
+          setSuccess((BoolResult)value);
         }
         break;
 
@@ -754,7 +903,7 @@ public class ThriftService {
       if (that == null)
         return false;
       if (that instanceof serverState_result)
-        return this.equals((serverState_result) that);
+        return this.equals((serverState_result)that);
       return false;
     }
 
@@ -785,7 +934,7 @@ public class ThriftService {
       }
 
       int lastComparison = 0;
-      serverState_result typedOther = (serverState_result) other;
+      serverState_result typedOther = (serverState_result)other;
 
       lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
       if (lastComparison != 0) {
@@ -804,15 +953,13 @@ public class ThriftService {
       return _Fields.findByThriftId(fieldId);
     }
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot)
-        throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
       schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot)
-        throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
       schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
+      }
 
     @Override
     public String toString() {
@@ -840,21 +987,16 @@ public class ThriftService {
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
       try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(
-            new org.apache.thrift.transport.TIOStreamTransport(out)));
-      }
-      catch (org.apache.thrift.TException te) {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
       }
     }
 
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException,
-        ClassNotFoundException {
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(
-            new org.apache.thrift.transport.TIOStreamTransport(in)));
-      }
-      catch (org.apache.thrift.TException te) {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
       }
     }
@@ -865,30 +1007,29 @@ public class ThriftService {
       }
     }
 
-    private static class serverState_resultStandardScheme extends
-        StandardScheme<serverState_result> {
+    private static class serverState_resultStandardScheme extends StandardScheme<serverState_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, serverState_result struct)
-          throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, serverState_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
-        while (true) {
+        while (true)
+        {
           schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
             break;
           }
           switch (schemeField.id) {
-          case 0: // SUCCESS
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.success = new BooleanResult();
-              struct.success.read(iprot);
-              struct.setSuccessIsSet(true);
-            } else {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new BoolResult();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          default:
-            org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
           iprot.readFieldEnd();
         }
@@ -898,8 +1039,7 @@ public class ThriftService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, serverState_result struct)
-          throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, serverState_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -923,8 +1063,7 @@ public class ThriftService {
     private static class serverState_resultTupleScheme extends TupleScheme<serverState_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, serverState_result struct)
-          throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, serverState_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetSuccess()) {
@@ -937,12 +1076,11 @@ public class ThriftService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, serverState_result struct)
-          throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, serverState_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.success = new BooleanResult();
+          struct.success = new BoolResult();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }

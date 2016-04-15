@@ -2,7 +2,7 @@ package thrift.server;
 
 import org.apache.thrift.TException;
 
-import thrift.BooleanResult;
+import thrift.BoolResult;
 
 /**
  * @author zhailzh
@@ -10,12 +10,14 @@ import thrift.BooleanResult;
  */
 public class ThriftServiceImpl implements thrift.ThriftService.Iface {
 
-  @Override
-  public BooleanResult serverState(String userid) throws TException {
-    BooleanResult res = new BooleanResult();
-    System.out.println("thrift service is called .......");
-    res.err_msg = "thrift server is caled.";
-    return res;
-  }
+  
+
+@Override
+public BoolResult serverState(String userid, long from, int to) throws TException {
+	    BoolResult res = new BoolResult();
+	    System.out.println("thrift service is called .......");
+	    res.msg = "thrift server is caled.";
+	    return res;
+}
 
 }

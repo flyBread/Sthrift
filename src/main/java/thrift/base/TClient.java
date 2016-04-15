@@ -1,6 +1,6 @@
 package thrift.base;
 
-import thrift.BooleanResult;
+import thrift.BoolResult;
 
 /**
  * @author zhailzh
@@ -8,6 +8,6 @@ import thrift.BooleanResult;
  */
 public interface TClient {
 
-  public BooleanResult serverState(String userid) throws org.apache.thrift.TException;
+  public BoolResult serverState(String userid) throws org.apache.thrift.TException;
 
 }
