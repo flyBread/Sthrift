@@ -7,7 +7,7 @@ import java.io.PipedOutputStream;
 /**
  * @author zhailzh
  * 
- * @Date 2016Äê1ÔÂ26ÈÕ¡ª¡ªÉÏÎç9:45:00
+ * @Date 2016ï¿½ï¿½1ï¿½ï¿½26ï¿½Õ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½9:45:00
  * 
  */
 public class PipleExample {
@@ -20,7 +20,7 @@ public class PipleExample {
 			public void run() {
 				for (int i = 0; i < 1; i++) {
 					try {
-						pipedout.write("hello      £¬88%%£¤%*E^E^^E \n".getBytes("UTF-8"));
+						pipedout.write("hello".getBytes("UTF-8"));
 						Thread.sleep(1000);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

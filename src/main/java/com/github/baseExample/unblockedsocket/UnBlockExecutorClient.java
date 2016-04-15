@@ -1,4 +1,4 @@
-package com.github.baseExample.fileChannel;
+package com.github.baseExample.unblockedsocket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,19 +17,18 @@ import java.util.Set;
 
 public class UnBlockExecutorClient {
 
-  private Selector selector = null;// ´´½¨Ò»¸öÊÂ¼şÑ¡ÔñÆ÷
-  private ByteBuffer sendBuffer = ByteBuffer.allocate(1024);// ÓÃÀ´´æ´¢Ïò·şÎñÆ÷·¢ËÍÏûÏ¢µÄbuffer
-  private ByteBuffer reciveBuffer = ByteBuffer.allocate(1024);// ÓÃÀ´½ÓÊÕ·şÎñÆ÷·µ»ØÏûÏ¢µÄbuffer
-  private SocketChannel socketChannel = null; // ´´½¨Ò»¸öSocketChannel
-  private Charset charest = Charset.forName("GBK"); // ´´½¨Ò»¸ö×Ö·û¼¯
+  private Selector selector = null;
+  private ByteBuffer sendBuffer = ByteBuffer.allocate(1024);
+  private ByteBuffer reciveBuffer = ByteBuffer.allocate(1024);
+  private SocketChannel socketChannel = null; 
+  private Charset charest = Charset.forName("GBK"); 
 
   public UnBlockExecutorClient() throws Exception {
-    socketChannel = SocketChannel.open(); // Éú³ÉsocketChannel
-    InetSocketAddress is = new InetSocketAddress("127.0.0.1", 5678); // °ó¶¨ipºÍ¶Ë¿Úµ½socket
-    socketChannel.connect(is);
-    socketChannel.configureBlocking(false);// ÉèÖÃsocketchannelÊÇ·Ç×èÈûµÄsocket
-    System.out.println("·şÎñÆ÷ÒÑ¾­Á¬½Ó");
-    selector = Selector.open(); // Éú³ÉÊÂ¼şÑ¡ÔñÆ÷
+    socketChannel = SocketChannel.open(); 
+    InetSocketAddress is = new InetSocketAddress("127.0.0.1", 5678); 
+    socketChannel.connect(is);//æœåŠ¡å™¨æ²¡æœ‰å¯åŠ¨çš„æ—¶å€™ï¼Œå®¢æˆ·ç«¯è¿æ¥å°±ä¼šç›´æ¥çš„æŠ¥é”™
+    socketChannel.configureBlocking(false);
+    selector = Selector.open(); 
   }
 
   public static void main(String[] args) throws Exception {
@@ -39,16 +38,18 @@ public class UnBlockExecutorClient {
         unBlockClient.reciveMessageFromKeyBoard();
       }
     };
-    thread.start(); // Æô¶¯½ÓÊÕ¿Í»§¶ËÏò·şÎñÆ÷·¢ËÍÏûÏ¢µÄÏß³Ì
-    unBlockClient.talk(); // ¿ªÊ¼¿Í»§¶ËºÍ·şÎñÆ÷µÄ¶Ô»°
+    thread.start(); 
+    unBlockClient.talk(); 
 
   }
 
   /**
-   * @Description ¿Í»§¶ËºÍ·şÎñÆ÷½»»¥ÏûÏ¢
+   * @Description å‘æœåŠ¡ç«¯å‘é€æ¶ˆæ¯
    */
   public void talk() throws Exception {
-    socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);// ÏòÊÂ¼şÑ¡ÔñÆ÷ÖĞ×¢ÈëÊÂ¼ş
+	//æƒ³è¿™ä¸ªselectoræ³¨å†Œ æ„Ÿå…´è¶£çš„äº‹ä»¶
+	//è¿™ä¸ªåœ¨è®¾è®¡æ¨¡å¼é‡Œé¢å«åš è§‚å¯Ÿè€…æ¨¡å¼
+    socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
     while (selector.select() > 0) {
       Set<?> keySet = selector.keys();
       Iterator<?> iterator = keySet.iterator();
@@ -58,17 +59,16 @@ public class UnBlockExecutorClient {
           key = (SelectionKey) iterator.next();
           iterator.remove();
           if (key.isReadable()) {
-            recive(key);// ¶Á×¼±¸¾ÍĞ÷¿ªÊ¼½ÓÊÕÏûÏ¢
+            recive(key);
           }
           if (key.isWritable()) {
-            sendToClient(key);// Ğ´×¼±¸¾ÍĞ÷·¢ËÍÏûÏ¢
+            sendToClient(key);
           }
         }
         catch (Exception e) {
-          // TODO Auto-generated catch block
           if (key != null) {
-            key.cancel(); // Çå¿ÕÊÂ¼ş
-            key.channel().close();// ¹Ø±ÕºÍÊÂ¼ş¹ØÁªµÄchannel
+            key.cancel(); 
+            key.channel().close();
           }
         }
       }
@@ -76,25 +76,21 @@ public class UnBlockExecutorClient {
   }
 
   /**
-   * @Description ½ÓÊÕ´Ó¼üÅÌÊäÈëµÄÏûÏ¢
+   * @Description æ¥å—é”®ç›˜è¾“å…¥çš„å†…å®¹ï¼Œæ”¾è¿›ç¼“å­˜ä¸­
    */
   public void reciveMessageFromKeyBoard() {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     String recive_msg = "";
     while (true) {
-      System.out.println("ÇëÏò·şÎñÆ÷·¢ËÍÏûÏ¢£º");
+      System.out.println("è¯·è¾“å…¥çš„å®¢æˆ·ç«¯è¾“å…¥å†…å®¹ï¼š");
       try {
-        recive_msg = reader.readLine();// ¶ÁÈ¡Ïò·şÎñÆ÷·¢ËÍµÄÏûÏ¢
+        recive_msg = reader.readLine();
       }
       catch (IOException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 
       synchronized (sendBuffer) {
-
-        // ½«Òª·¢µ½·şÎñÆ÷µÄÏûÏ¢£¬·ÅÈëµ½sendBufferÖĞ;¼ÓËøÊÇÒòÎªÔÚĞ´×¼±¸¾ÍĞ÷ÊÂ¼şÖĞµ÷
-        // ÓÃµÄÒ²ÊÇ½«sendBuffer¶ÔÏó·¢ËÍµ½·şÎñÆ÷£¬ËùÒÔÎªÁËÏß³ÌÍ¬²½°²È«ËùÒÔ¼ÓÁËËø
         sendBuffer.put(encode(recive_msg));
       }
       if (recive_msg.equals("bye")) {
@@ -103,28 +99,24 @@ public class UnBlockExecutorClient {
     }
   }
 
-  /**
-   * @param ×¼±¸¾ÍĞ÷µÄÊÂ¼ş
-   * @Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢
-   */
   public void sendToClient(SelectionKey key) throws Exception {
-    SocketChannel socketChannel = (SocketChannel) key.channel();// µÃµ½socketChannel
+    SocketChannel socketChannel = (SocketChannel) key.channel();// ÃµsocketChannel
     synchronized (sendBuffer) {
-      sendBuffer.flip(); // °Ñ¼«ÏŞÉèÎªÎ»ÖÃ£¬°ÑÎ»ÖÃÉèÎªÁã
-      socketChannel.write(sendBuffer); // ½«Òª·¢ËÍµÄÏûÏ¢Ğ´ÈësocketChannelÖĞ
-      sendBuffer.compact();// ½«bufferÖĞÒÑ·¢ËÍµÄÊı¾İÉ¾³ı
+      sendBuffer.flip(); // Ñ¼ÎªÎ»Ã£Î»Îª
+      socketChannel.write(sendBuffer); // ÒªÍµÏ¢Ğ´socketChannel
+      sendBuffer.compact();// bufferÑ·ÍµÉ¾
     }
   }
 
   /**
-   * @param ×¼±¸¾ÍĞ÷µÄÊÂ¼ş
-   * @½ÓÊÕ·şÎñÆ÷·µ»ØµÄÏûÏ¢
+   * @param ×¼Â¼
+   * @Õ·ØµÏ¢
    */
   public void recive(SelectionKey key) {
-    SocketChannel socketChannel = (SocketChannel) key.channel(); // µÃµ½socketChannel
+    SocketChannel socketChannel = (SocketChannel) key.channel(); // ÃµsocketChannel
 
     try {
-      socketChannel.read(reciveBuffer);// ½«socketChannel½ÓÊÕµ½ÏûÏ¢¶ÁÈëµ½reciveBufferÖĞ
+      socketChannel.read(reciveBuffer);// socketChannelÕµÏ¢ëµ½reciveBuffer
     }
     catch (IOException e) {
       // TODO Auto-generated catch block
@@ -137,15 +129,15 @@ public class UnBlockExecutorClient {
       return;
     }
 
-    String out_msg = recive_msg.substring(0, recive_msg.indexOf("\n") + 1);// ½«È¥³ı¡°\n\r¡±µÄ×Ö·ûÈ¥µôÖ®ºóµÄ×Ö·û´®Êä³ö
-    System.out.println("·şÎñÆ÷·µ»ØµÄÏûÏ¢ÊÇ£º" + out_msg);
+    String out_msg = recive_msg.substring(0, recive_msg.indexOf("\n") + 1);// È¥\n\rÖ·È¥Ö®Ö·
+    System.out.println("ØµÏ¢Ç£" + out_msg);
 
     if (out_msg.equals("bye")) {
       try {
-        key.cancel();// Çå¿ÕÊÂ¼ş
-        socketChannel.close();// ¹Ø±ÕsocketChannelÁ¬½Ó
-        System.out.println("¹Ø±ÕºÍ·şÎñÆ÷µÄÁ¬½Ó");
-        selector.close();// ¹Ø±ÕÊÂ¼şÑ¡ÔñÆ÷
+        key.cancel();
+        socketChannel.close();
+        System.out.println("Ø±ÕºÍ·");
+        selector.close();
       }
       catch (IOException e) {
         // TODO Auto-generated catch block
@@ -155,17 +147,11 @@ public class UnBlockExecutorClient {
 
   }
 
-  /**
-   * @½âÂë£º½«bytebuffer×ª»»Îª×Ö·û´®
-   */
   public String decode(ByteBuffer buffer) {
     CharBuffer charBuffer = charest.decode(buffer);
     return charBuffer.toString();
   }
 
-  /**
-   * @±àÂë£º½«×Ö·û´®×ªÎªbyteBuffer
-   */
   public ByteBuffer encode(String str) {
     return charest.encode(str);
   }
