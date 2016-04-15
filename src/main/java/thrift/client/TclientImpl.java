@@ -9,7 +9,6 @@ import thrift.base.TClient;
 /**
  * @author zhailzh
  * 
- * @Date 2016年3月10日——下午2:40:31
  * 
  */
 public class TclientImpl extends TclientAbstract implements TClient {
@@ -24,7 +23,6 @@ public class TclientImpl extends TclientAbstract implements TClient {
   }
 
   public void send_serverState(String userid) throws org.apache.thrift.TException {
-    // 方法的参数的封装成了一个类
     serverState_args args = new serverState_args();
     args.setUserid(userid);
     sendBase("serverState", args);

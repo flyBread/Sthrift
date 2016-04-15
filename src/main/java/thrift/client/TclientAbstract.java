@@ -8,7 +8,6 @@ import thrift.ThriftService.serverState_args;
 /**
  * @author zhailzh
  * 
- * @Date 2016年3月10日——下午2:41:47
  * 
  */
 public class TclientAbstract extends TServiceClient {

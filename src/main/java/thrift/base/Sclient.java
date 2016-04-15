@@ -9,14 +9,9 @@ import org.apache.thrift.protocol.TProtocol;
 
 /**
  * @author zhailzh
- * 
- * @Date 2016年3月10日——下午4:33:43
- * 
- * 主要的工作是封装socket链接的客户端，地位相当于thrift中的
  */
 public class Sclient {
 
-  // 客户端和服务端的双方按照协定的协议通信
   public Sclient(TProtocol prot) {
     this(prot, prot);
   }
