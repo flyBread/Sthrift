@@ -33,8 +33,8 @@ public class UnBlockExecutorServer {
 
   public void server() {
     try {
-      serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT); // serverSocketChannelselectorעӾ¼
-      while (selector.select() > 0) {
+      serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+      while (selector.select() > 0) {//没有Client段连接的时候，会在selector的时候
         Set<?> readyKeys = selector.selectedKeys();  
         Iterator<?> it = readyKeys.iterator();
         while (it.hasNext()) {
@@ -48,44 +48,46 @@ public class UnBlockExecutorServer {
               System.out.println("接受客户端的连接：" + socketChannel.socket().getInetAddress() + ":"
                   + socketChannel.socket().getPort());
               socketChannel.configureBlocking(false); // socketChannelΪsocketChannel
+              
               ByteBuffer buffer = ByteBuffer.allocate(1024);
+              socketChannel.write(encode("向客户端发送一条已经接受连接的消息"));
               socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE,
                   buffer); //接受到客户端的连接以后，注册感兴趣的读事件和写事件
             }
-            if (key.isReadable()) {
-              ByteBuffer buffer = (ByteBuffer) key.attachment(); 
-              SocketChannel socketChannel = (SocketChannel) key.channel(); 
-              ByteBuffer readbuffer = ByteBuffer.allocate(32); 
-              socketChannel.read(readbuffer); 
-              readbuffer.flip(); 
-              readbuffer.limit(readbuffer.capacity()); 
-              buffer.put(readbuffer);
-            }
-            if (key.isWritable()) {
-              ByteBuffer buffer = (ByteBuffer) key.attachment(); 
-              SocketChannel socketChannel = (SocketChannel) key.channel(); 
-              buffer.flip(); 
-              String data = decode(buffer); 
-              if (data.indexOf("/r/n") == -1) {
-                return;
-              }
-              String outdata = data.substring(0, data.indexOf("/r/n") + 1); 
-              System.out.println("接受：" + outdata);
-
-              String return_msg = "Hi,client"; 
-              ByteBuffer sendBuffer = encode(return_msg);
-              while (sendBuffer.hasRemaining()) {
-                socketChannel.write(sendBuffer);
-              }
-              ByteBuffer tempbuffer = encode(outdata); 
-              buffer.position(tempbuffer.limit()); 
-              buffer.compact();
-              if (outdata.equals("bye/r/n")) {
-                key.cancel();
-                key.channel().close();
-                System.out.println("结束了");
-              }
-            }
+//            if (key.isReadable()) {
+//              ByteBuffer buffer = (ByteBuffer) key.attachment(); 
+//              SocketChannel socketChannel = (SocketChannel) key.channel(); 
+//              ByteBuffer readbuffer = ByteBuffer.allocate(32); 
+//              socketChannel.read(readbuffer); 
+//              readbuffer.flip(); 
+//              readbuffer.limit(readbuffer.capacity()); 
+//              buffer.put(readbuffer);
+//            }
+//            if (key.isWritable()) {
+//              ByteBuffer buffer = (ByteBuffer) key.attachment(); 
+//              SocketChannel socketChannel = (SocketChannel) key.channel(); 
+//              buffer.flip(); 
+//              String data = decode(buffer); 
+//              if (data.indexOf("/r/n") == -1) {
+//                return;
+//              }
+//              String outdata = data.substring(0, data.indexOf("/r/n") + 1); 
+//              System.out.println("接受：" + outdata);
+//
+//              String return_msg = "Hi,client"; 
+//              ByteBuffer sendBuffer = encode(return_msg);
+//              while (sendBuffer.hasRemaining()) {
+//                socketChannel.write(sendBuffer);
+//              }
+//              ByteBuffer tempbuffer = encode(outdata); 
+//              buffer.position(tempbuffer.limit()); 
+//              buffer.compact();
+//              if (outdata.equals("bye/r/n")) {
+//                key.cancel();
+//                key.channel().close();
+//                System.out.println("结束了");
+//              }
+//            }
           }
           catch (Exception e) {
             if (key != null) {
