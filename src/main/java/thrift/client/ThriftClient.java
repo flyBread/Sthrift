@@ -1,11 +1,9 @@
 package thrift.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
 
 import thrift.BoolResult;
 import thrift.ThriftService;
@@ -16,35 +14,38 @@ import thrift.ThriftService;
  */
 public class ThriftClient {
 
-  private int port = 10111;
+	private static int port = 10111;
 
-  public BoolResult pushMsgSync() {
-    TTransport transport = null;
-    int retry = 0;
-    int serverNum = 1;
-    BoolResult rt = new BoolResult();
-    while (retry++ < serverNum) {
-      try {
-        String ip = "localhost";
-        transport = new TFramedTransport(new TSocket(ip, port));
-        TProtocol protocol = new TBinaryProtocol(transport);
-        transport.open();
-        ThriftService.Client client = new ThriftService.Client(protocol);
-        rt = client.serverState("userId",10914l,234);
-        break;
-      }
-      catch (TException e) {
-        e.printStackTrace();
-      }
-      finally {
-        transport.close();
-      }
-    }
-    return rt;
-  }
+	public static ThriftService.Iface getClient() {
+		return ClientProxy.getProxy(ThriftService.Iface.class, port);
+	}
 
-  public static void main(String[] args) {
-    ThriftClient client = new ThriftClient();
-    client.pushMsgSync();
-  }
+	public BoolResult serverStatePara(List<String> userids, long from, int to) throws org.apache.thrift.TException {
+		return getClient().serverStatePara(userids, from, to);
+	}
+
+	public static void main(String[] args) throws TException {
+		final ThriftClient client = new ThriftClient();
+		final List<String> userids = new ArrayList<>();
+		for (int i = 0; i < 10000; i++) {
+			userids.add("value大大大滴滴答答"+i);
+		}
+		final long from = 1l;
+		final int to = 0;
+		for (int i = 0; i < 2000; i++) {
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						client.serverStatePara(userids, from, to);
+					} catch (TException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}
+		
+	}
 }

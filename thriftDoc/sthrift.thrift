@@ -9,5 +9,6 @@ struct BoolResult{
 
 service ThriftService{
 	BoolResult serverState(1:string userid,2:i64 from,3:i32 to);
+	BoolResult serverStatePara(1:list<string> userids,2:i64 from,3:i32 to);
 }
  
