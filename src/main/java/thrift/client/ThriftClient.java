@@ -74,28 +74,13 @@ public class ThriftClient {
 	public static void main(String[] args) throws TException {
 		final ThriftClient client = new ThriftClient();
 		final List<String> userids = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			userids.add("value大大大滴滴答答" + i);
+		for (int i = 0; i < 1; i++) {
+			userids.add("1171781655961602827");
 		}
 		final long from = 1l;
 		final int to = 0;
 		logger.info("client:{}",userids);
-		
-		for (int i = 0; i < 2; i++) {
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						logger.info("client:{}",userids);
-						client.serverStatePara(userids, from, to);
-					} catch (TException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}).start();
-		}
+		client.serverStatePara(userids, from, to);
 
 	}
 }

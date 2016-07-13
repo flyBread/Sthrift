@@ -60,7 +60,6 @@ public class RegisterServer implements BeanFactoryAware {
 			args.transportFactory(new TFramedTransport.Factory());
 			args.protocolFactory(proFactory);
 			args.processor(process);
-
 			args.selectorThreads(16);
 			args.workerThreads(32);
 			args.selectorThreads(Runtime.getRuntime().availableProcessors() + 1);
