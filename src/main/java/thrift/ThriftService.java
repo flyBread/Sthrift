@@ -446,7 +446,7 @@ public class ThriftService {
 			return new method_args(this);
 		}
 
-		@Override
+		
 		public void clear() {
 			this.userid = null;
 			setFromIsSet(false);
@@ -598,7 +598,7 @@ public class ThriftService {
 			throw new IllegalStateException();
 		}
 
-		@Override
+		
 		public boolean equals(Object that) {
 			if (that == null)
 				return false;
@@ -641,7 +641,7 @@ public class ThriftService {
 			return true;
 		}
 
-		@Override
+		
 		public int hashCode() {
 			return 0;
 		}
@@ -699,7 +699,7 @@ public class ThriftService {
 			schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
 		}
 
-		@Override
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder("method_args(");
 			boolean first = true;
@@ -836,7 +836,7 @@ public class ThriftService {
 
 		private static class method_argsTupleScheme extends TupleScheme<method_args> {
 
-			@Override
+			
 			public void write(org.apache.thrift.protocol.TProtocol prot, method_args struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol oprot = (TTupleProtocol) prot;
@@ -862,7 +862,7 @@ public class ThriftService {
 				}
 			}
 
-			@Override
+			
 			public void read(org.apache.thrift.protocol.TProtocol prot, method_args struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol iprot = (TTupleProtocol) prot;
@@ -999,7 +999,7 @@ public class ThriftService {
 			return new method_result(this);
 		}
 
-		@Override
+		
 		public void clear() {
 			this.success = null;
 		}
@@ -1069,7 +1069,7 @@ public class ThriftService {
 			throw new IllegalStateException();
 		}
 
-		@Override
+		
 		public boolean equals(Object that) {
 			if (that == null)
 				return false;
@@ -1094,7 +1094,7 @@ public class ThriftService {
 			return true;
 		}
 
-		@Override
+		
 		public int hashCode() {
 			return 0;
 		}
@@ -1132,7 +1132,7 @@ public class ThriftService {
 			schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
 		}
 
-		@Override
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder("method_result(");
 			boolean first = true;
@@ -1237,7 +1237,7 @@ public class ThriftService {
 
 		private static class method_resultTupleScheme extends TupleScheme<method_result> {
 
-			@Override
+			
 			public void write(org.apache.thrift.protocol.TProtocol prot, method_result struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol oprot = (TTupleProtocol) prot;
@@ -1251,7 +1251,7 @@ public class ThriftService {
 				}
 			}
 
-			@Override
+			
 			public void read(org.apache.thrift.protocol.TProtocol prot, method_result struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol iprot = (TTupleProtocol) prot;
@@ -1413,7 +1413,7 @@ public class ThriftService {
 			return new methodPara_args(this);
 		}
 
-		@Override
+		
 		public void clear() {
 			this.userids = null;
 			setFromIsSet(false);
@@ -1580,7 +1580,7 @@ public class ThriftService {
 			throw new IllegalStateException();
 		}
 
-		@Override
+		
 		public boolean equals(Object that) {
 			if (that == null)
 				return false;
@@ -1623,7 +1623,7 @@ public class ThriftService {
 			return true;
 		}
 
-		@Override
+		
 		public int hashCode() {
 			return 0;
 		}
@@ -1681,7 +1681,7 @@ public class ThriftService {
 			schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
 		}
 
-		@Override
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder("methodPara_args(");
 			boolean first = true;
@@ -1834,7 +1834,7 @@ public class ThriftService {
 
 		private static class methodPara_argsTupleScheme extends TupleScheme<methodPara_args> {
 
-			@Override
+			
 			public void write(org.apache.thrift.protocol.TProtocol prot, methodPara_args struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol oprot = (TTupleProtocol) prot;
@@ -1865,7 +1865,7 @@ public class ThriftService {
 				}
 			}
 
-			@Override
+			
 			public void read(org.apache.thrift.protocol.TProtocol prot, methodPara_args struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol iprot = (TTupleProtocol) prot;
@@ -2011,7 +2011,7 @@ public class ThriftService {
 			return new methodPara_result(this);
 		}
 
-		@Override
+		
 		public void clear() {
 			this.success = null;
 		}
@@ -2081,7 +2081,7 @@ public class ThriftService {
 			throw new IllegalStateException();
 		}
 
-		@Override
+		
 		public boolean equals(Object that) {
 			if (that == null)
 				return false;
@@ -2106,7 +2106,7 @@ public class ThriftService {
 			return true;
 		}
 
-		@Override
+		
 		public int hashCode() {
 			return 0;
 		}
@@ -2144,7 +2144,7 @@ public class ThriftService {
 			schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
 		}
 
-		@Override
+		
 		public String toString() {
 			StringBuilder sb = new StringBuilder("methodPara_result(");
 			boolean first = true;
@@ -2249,7 +2249,7 @@ public class ThriftService {
 
 		private static class methodPara_resultTupleScheme extends TupleScheme<methodPara_result> {
 
-			@Override
+			
 			public void write(org.apache.thrift.protocol.TProtocol prot, methodPara_result struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol oprot = (TTupleProtocol) prot;
@@ -2263,7 +2263,7 @@ public class ThriftService {
 				}
 			}
 
-			@Override
+			
 			public void read(org.apache.thrift.protocol.TProtocol prot, methodPara_result struct)
 					throws org.apache.thrift.TException {
 				TTupleProtocol iprot = (TTupleProtocol) prot;

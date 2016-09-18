@@ -11,8 +11,8 @@ import java.util.List;
 public class ClearCollection {
 	public static void main(String[] args) {
 		// 巨量的toids，需要1000一次，分批量的处理
-		List<String> toidsm = new ArrayList<>(10000);
-		List<String> toids = new ArrayList<>();
+		List<String> toidsm = new ArrayList<String>(10000);
+		List<String> toids = new ArrayList<String>();
 		for (int i = 0; i < toidsm.size(); i++) {
 			if(toids.size() < 1000){
 				toids.add(toidsm.get(i));

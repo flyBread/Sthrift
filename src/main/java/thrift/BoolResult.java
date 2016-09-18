@@ -148,7 +148,7 @@ public class BoolResult implements org.apache.thrift.TBase<BoolResult, BoolResul
     return new BoolResult(this);
   }
 
-  @Override
+ 
   public void clear() {
     setResultIsSet(false);
     this.result = false;
@@ -288,7 +288,7 @@ public class BoolResult implements org.apache.thrift.TBase<BoolResult, BoolResul
     throw new IllegalStateException();
   }
 
-  @Override
+ 
   public boolean equals(Object that) {
     if (that == null)
       return false;
@@ -331,7 +331,7 @@ public class BoolResult implements org.apache.thrift.TBase<BoolResult, BoolResul
     return true;
   }
 
-  @Override
+ 
   public int hashCode() {
     return 0;
   }
@@ -389,7 +389,7 @@ public class BoolResult implements org.apache.thrift.TBase<BoolResult, BoolResul
     schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
   }
 
-  @Override
+ 
   public String toString() {
     StringBuilder sb = new StringBuilder("BoolResult(");
     boolean first = true;
@@ -530,7 +530,7 @@ public class BoolResult implements org.apache.thrift.TBase<BoolResult, BoolResul
 
   private static class BoolResultTupleScheme extends TupleScheme<BoolResult> {
 
-    @Override
+   
     public void write(org.apache.thrift.protocol.TProtocol prot, BoolResult struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
@@ -555,7 +555,7 @@ public class BoolResult implements org.apache.thrift.TBase<BoolResult, BoolResul
       }
     }
 
-    @Override
+   
     public void read(org.apache.thrift.protocol.TProtocol prot, BoolResult struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(3);

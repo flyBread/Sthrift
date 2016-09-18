@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class ATestValue {
 	public static void main(String[] args) {
-		HashMap<String, String> value = new HashMap<>(7);
+		HashMap<String, String> value = new HashMap<String, String>(7);
 		value.put("a", "b");
 		value.put("a5", "b");
 		System.out.println(value);

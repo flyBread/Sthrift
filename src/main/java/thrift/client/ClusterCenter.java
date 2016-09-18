@@ -31,7 +31,7 @@ public class ClusterCenter {
 	   * @return
 	   */
 	  public void init() {
-	    listServer = new ArrayList<>();
+	    listServer = new ArrayList<String>();
 	    listServer.add("127.0.0.1");
 	  }
 

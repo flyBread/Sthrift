@@ -73,7 +73,7 @@ public class ThriftClient {
 	 */
 	public static void main(String[] args) throws TException {
 		final ThriftClient client = new ThriftClient();
-		final List<String> userids = new ArrayList<>();
+		final List<String> userids = new ArrayList<String>();
 		for (int i = 0; i < 1; i++) {
 			userids.add("1171781655961602827");
 		}

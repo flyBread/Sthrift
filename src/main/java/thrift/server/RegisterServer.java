@@ -37,7 +37,6 @@ public class RegisterServer implements BeanFactoryAware {
 	// private static SelfUncaughtExceptionHandler su = new
 	// SelfUncaughtExceptionHandler();
 
-	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}

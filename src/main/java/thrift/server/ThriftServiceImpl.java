@@ -12,7 +12,6 @@ import thrift.BoolResult;
  */
 public class ThriftServiceImpl implements thrift.ThriftService.Iface {
 
-	@Override
 	public BoolResult method(String userid, long from, int to) throws TException {
 		BoolResult res = new BoolResult();
 		System.out.println("thrift service is called .......");
@@ -20,7 +19,6 @@ public class ThriftServiceImpl implements thrift.ThriftService.Iface {
 		return res;
 	}
 
-	@Override
 	public BoolResult methodPara(List<String> userids, long from, int to) throws TException {
 		BoolResult res = new BoolResult();
 		System.out.println("tuserids ：" + userids.size());
